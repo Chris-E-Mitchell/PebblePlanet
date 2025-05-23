@@ -3,7 +3,8 @@ using UnityEngine;
 public class EnemyBehavior : MonoBehaviour
 {
     [SerializeField] private float speed = 2f;
-    [SerializeField] private Transform targetPlanet; 
+    [SerializeField] private Transform targetPlanet;
+    [SerializeField] private int enemyDamage = 1;
 
     void Start()
     {
@@ -46,10 +47,23 @@ public class EnemyBehavior : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Planet"))
         {
+            if (PlanetHealth.isGameOver) // Don't do anything if game is already over
+            {
+                Destroy(gameObject); // Just disappear if game over
+                return;
+            }
+
             Debug.Log("Enemy reached the planet!");
-            Destroy(gameObject); 
-            
-            // Add damage to planet logic here
+            PlanetHealth planetHealthComponent = collision.gameObject.GetComponent<PlanetHealth>();
+            if (planetHealthComponent != null)
+            {
+                planetHealthComponent.TakeDamage(enemyDamage);
+            }
+            else
+            {
+                Debug.LogWarning("Enemy collided with Planet, but PlanetHealth component was not found!");
+            }
+            Destroy(gameObject); // Destroy the enemy after it hits the planet
         }
     }
 
