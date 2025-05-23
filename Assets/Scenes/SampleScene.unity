@@ -710,6 +710,7 @@ MonoBehaviour:
   firePoint: {fileID: 242947954}
   fireRate: 2
   nextFireTime: 0
+  shootSound: {fileID: 8300000, guid: 040956c1167fc4441ace3ad61c08f4c2, type: 3}
 --- !u!136 &792437769
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1367,6 +1368,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
+  planetHitSound: {fileID: 8300000, guid: 445a2b276eb66674993ab434eb6a164a, type: 3}
   healthText: {fileID: 1952450959}
 --- !u!1 &1758239745
 GameObject:

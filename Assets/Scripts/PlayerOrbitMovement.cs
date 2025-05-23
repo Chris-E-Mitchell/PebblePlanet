@@ -15,6 +15,7 @@ public class PlayerOrbitMovement : MonoBehaviour
     [SerializeField] private Transform firePoint;         
     [SerializeField] private float fireRate = 2f;         
     [SerializeField] private float nextFireTime = 0f;
+    [SerializeField] private AudioClip shootSound;
 
     void Start()
     {
@@ -65,5 +66,10 @@ public class PlayerOrbitMovement : MonoBehaviour
         Quaternion projectileRotation = Quaternion.LookRotation(transform.up);
 
         Instantiate(projectilePrefab, firePoint.position, projectileRotation);
+
+        if (shootSound != null)
+        {
+            AudioSource.PlayClipAtPoint(shootSound, Camera.main.transform.position);
+        }
     }
 }

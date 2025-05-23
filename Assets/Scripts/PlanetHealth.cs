@@ -5,6 +5,7 @@ public class PlanetHealth : MonoBehaviour
 {
     [Header("Health Settings")]
     [SerializeField] private int maxHealth = 10;
+    [SerializeField] private AudioClip planetHitSound;
     private int currentHealth;
 
     [Header("UI (Optional)")]
@@ -27,6 +28,11 @@ public class PlanetHealth : MonoBehaviour
 
         currentHealth -= amount;
         currentHealth = Mathf.Max(currentHealth, 0); // Ensure health doesn't go below 0
+
+        if (planetHitSound != null && currentHealth < maxHealth)
+        {
+            AudioSource.PlayClipAtPoint(planetHitSound, Camera.main.transform.position);
+        }
 
         UpdateHealthUI();
         Debug.Log($"Planet took {amount} damage. Current health: {currentHealth}/{maxHealth}");
