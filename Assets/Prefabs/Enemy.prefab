@@ -153,3 +153,4 @@ MonoBehaviour:
   targetPlanet: {fileID: 0}
   enemyDamage: 1
   enemyPoints: 10
+  explosionPrefab: {fileID: 6078865976387149497, guid: 2e474b96c3a2f1d44b1ef2beb74cbb70, type: 3}

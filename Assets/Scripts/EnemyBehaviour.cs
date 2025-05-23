@@ -6,6 +6,7 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField] private Transform targetPlanet;
     [SerializeField] private int enemyDamage = 1;
     [SerializeField] private int enemyPoints = 10;
+    [SerializeField] private GameObject explosionPrefab;
 
     void Start()
     {
@@ -43,6 +44,11 @@ public class EnemyBehavior : MonoBehaviour
         if (collision.gameObject.CompareTag("Projectile"))
         {
             Debug.Log("Enemy hit by projectile!");
+            
+            if (explosionPrefab != null) // << ADD THIS BLOCK
+            {
+                Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            }
 
             Destroy(gameObject);
             Destroy(collision.gameObject);
