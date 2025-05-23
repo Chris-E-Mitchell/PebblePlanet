@@ -5,6 +5,7 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField] private float speed = 2f;
     [SerializeField] private Transform targetPlanet;
     [SerializeField] private int enemyDamage = 1;
+    [SerializeField] private int enemyPoints = 10;
 
     void Start()
     {
@@ -42,8 +43,15 @@ public class EnemyBehavior : MonoBehaviour
         if (collision.gameObject.CompareTag("Projectile"))
         {
             Debug.Log("Enemy hit by projectile!");
+
             Destroy(gameObject);
-            Destroy(collision.gameObject); 
+            Destroy(collision.gameObject);
+
+            if (GameManager.Instance != null && !PlanetHealth.isGameOver)
+            {
+                GameManager.Instance.AddScore(enemyPoints);
+                Debug.Log("Adding enemy points:" + enemyPoints);
+            }
         }
         else if (collision.gameObject.CompareTag("Planet"))
         {
