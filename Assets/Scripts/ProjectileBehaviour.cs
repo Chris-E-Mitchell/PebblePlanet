@@ -23,9 +23,9 @@ public class ProjectileBehavior : MonoBehaviour
         Destroy(gameObject, lifetime);
     }
 
-    void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log("Projectile hit: " + collision.gameObject.name);
-        Destroy(gameObject);
-    }
+    //void OnCollisionEnter(Collision collision)
+    //{
+    //    Debug.Log("Projectile hit: " + collision.gameObject.name);
+    //    Destroy(gameObject);
+    //}
 }
