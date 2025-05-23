@@ -10,6 +10,12 @@ public class PlayerOrbitMovement : MonoBehaviour
     [SerializeField] private float movementSpeed = 50f;
     [SerializeField] private float playerOffsetFromSurface = 0.5f;
 
+    [Header("Player Shooting")]
+    [SerializeField] private GameObject projectilePrefab; 
+    [SerializeField] private Transform firePoint;         
+    [SerializeField] private float fireRate = 2f;         
+    [SerializeField] private float nextFireTime = 0f;
+
     void Start()
     {
         if (planet == null)
@@ -23,6 +29,7 @@ public class PlayerOrbitMovement : MonoBehaviour
 
         Vector3 directionToPlanetCenter = (planet.position - transform.position).normalized;
         transform.rotation = Quaternion.FromToRotation(transform.up, -directionToPlanetCenter) * transform.rotation;
+
     }
 
     void Update()
@@ -30,11 +37,6 @@ public class PlayerOrbitMovement : MonoBehaviour
         if (planet == null) return;
 
         float horizontalInput = Input.GetAxis("Horizontal");
-
-        if (Mathf.Approximately(horizontalInput, 0f))
-        {
-            return;
-        }
 
         Vector3 rotationAxis = planet.transform.forward;
         float angle = -horizontalInput * movementSpeed * Time.deltaTime;
@@ -44,5 +46,24 @@ public class PlayerOrbitMovement : MonoBehaviour
         transform.up = vectorFromPlanetToPlayer;
 
         transform.position = planet.position + vectorFromPlanetToPlayer * (planetRadius + playerOffsetFromSurface);
+
+        if (Input.GetButton("Fire1") && Time.time >= nextFireTime)
+        {
+            nextFireTime = Time.time + 1f / fireRate;
+            Shoot();
+        }
+    }
+
+    private void Shoot()
+    {
+        if (projectilePrefab == null || firePoint == null)
+        {
+            Debug.LogWarning("Projectile Prefab or Fire Point not assigned in PlayerOrbitMovement script.");
+            return;
+        }
+
+        Quaternion projectileRotation = Quaternion.LookRotation(transform.up);
+
+        Instantiate(projectilePrefab, firePoint.position, projectileRotation);
     }
 }
