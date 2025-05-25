@@ -980,9 +980,8 @@ MonoBehaviour:
   nextFireTime: 0
   shootSound: {fileID: 8300000, guid: 040956c1167fc4441ace3ad61c08f4c2, type: 3}
   smartBombRadius: 15
-  smartBombUseSound: {fileID: 0}
-  smartBombEarnSound: {fileID: 0}
-  smartBombVisualEffectPrefab: {fileID: 0}
+  smartBombUseSound: {fileID: 8300000, guid: 890b64368375547478073a520540aec7, type: 3}
+  smartBombVisualEffectPrefab: {fileID: 369524821105886636, guid: 7e061aa7921a19f47b75b578864ebccf, type: 3}
 --- !u!4 &792437772
 Transform:
   m_ObjectHideFlags: 0
@@ -1403,7 +1402,8 @@ MonoBehaviour:
   gameOverPanel: {fileID: 262132618}
   smartBombText: {fileID: 221430997}
   smartBombs: 3
-  scoreForNewBomb: 200
+  scoreForNewBomb: 150
+  smartBombEarnSound: {fileID: 8300000, guid: 2a77456ece8f0054dae80e4f0cfcaa16, type: 3}
 --- !u!4 &1297011764
 Transform:
   m_ObjectHideFlags: 0

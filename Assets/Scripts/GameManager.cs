@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     [Header("Smart Bomb Settings")]
     [SerializeField] private int smartBombs = 3;
     [SerializeField] private int scoreForNewBomb = 200;
+    [SerializeField] private AudioClip smartBombEarnSound;
 
     void Awake()
     {
@@ -69,6 +70,10 @@ public class GameManager : MonoBehaviour
         if ((score % scoreForNewBomb) == 0)
         {
             AddSmartBomb();
+            if (smartBombEarnSound != null)
+            {
+                AudioSource.PlayClipAtPoint(smartBombEarnSound, Camera.main.transform.position);
+            }
             Debug.Log("New smart bomb awarded!");
         }
     }

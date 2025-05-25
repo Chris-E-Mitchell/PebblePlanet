@@ -21,7 +21,6 @@ public class PlayerOrbitMovement : MonoBehaviour
     [Header("Smart Bomb Settings")]
     [SerializeField] private float smartBombRadius = 15f; // Radius from planet center
     [SerializeField] private AudioClip smartBombUseSound;
-    [SerializeField] private AudioClip smartBombEarnSound; // Optional
     [SerializeField] private GameObject smartBombVisualEffectPrefab; // Optional visual effect for the bomb
 
     void Start()
@@ -102,7 +101,7 @@ public class PlayerOrbitMovement : MonoBehaviour
 
         if (smartBombUseSound != null)
         {
-            AudioSource.PlayClipAtPoint(smartBombEarnSound, Camera.main.transform.position);
+            AudioSource.PlayClipAtPoint(smartBombUseSound, Camera.main.transform.position);
         }
     }
 
