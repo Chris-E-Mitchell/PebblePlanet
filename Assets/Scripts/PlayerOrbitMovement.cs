@@ -11,11 +11,18 @@ public class PlayerOrbitMovement : MonoBehaviour
     [SerializeField] private float playerOffsetFromSurface = 0.5f;
 
     [Header("Player Shooting")]
-    [SerializeField] private GameObject projectilePrefab; 
+    [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private GameObject muzzleFlashPrefab;
     [SerializeField] private Transform firePoint;         
     [SerializeField] private float fireRate = 2f;         
     [SerializeField] private float nextFireTime = 0f;
     [SerializeField] private AudioClip shootSound;
+
+    [Header("Smart Bomb Settings")]
+    [SerializeField] private float smartBombRadius = 15f; // Radius from planet center
+    [SerializeField] private AudioClip smartBombUseSound;
+    [SerializeField] private AudioClip smartBombEarnSound; // Optional
+    [SerializeField] private GameObject smartBombVisualEffectPrefab; // Optional visual effect for the bomb
 
     void Start()
     {
@@ -53,6 +60,14 @@ public class PlayerOrbitMovement : MonoBehaviour
             nextFireTime = Time.time + 1f / fireRate;
             Shoot();
         }
+
+        if (Input.GetButtonDown("Fire2"))
+        {
+            if (GameManager.Instance.GetSmartBombsRemaining() > 0)
+            {
+                UseSmartBomb();
+            }
+        }
     }
 
     private void Shoot()
@@ -65,11 +80,60 @@ public class PlayerOrbitMovement : MonoBehaviour
 
         Quaternion projectileRotation = Quaternion.LookRotation(transform.up);
 
+        if (muzzleFlashPrefab != null) // << ADD THIS BLOCK
+        {
+            Instantiate(muzzleFlashPrefab, firePoint.position, projectileRotation);
+        }
+
         Instantiate(projectilePrefab, firePoint.position, projectileRotation);
 
         if (shootSound != null)
         {
             AudioSource.PlayClipAtPoint(shootSound, Camera.main.transform.position);
         }
+    }
+
+    private void UseSmartBomb()
+    {
+        GameManager.Instance.RemoveSmartBomb();
+        Debug.Log("SMART BOMB USED! Remaining: " + GameManager.Instance.GetSmartBombsRemaining());
+
+        ActivateSmartBombEffect();
+
+        if (smartBombUseSound != null)
+        {
+            AudioSource.PlayClipAtPoint(smartBombEarnSound, Camera.main.transform.position);
+        }
+    }
+
+    private void ActivateSmartBombEffect()
+    {
+        // Smart bomb visual
+        if (smartBombVisualEffectPrefab != null)
+        {
+            Instantiate(smartBombVisualEffectPrefab, planet.position, Quaternion.identity);
+        }
+
+        // Find all objects tagged as "Enemy"
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        int enemiesDestroyed = 0;
+
+        foreach (GameObject enemy in enemies)
+        {
+            if (enemy == null) continue;
+
+            float distanceToPlanetCenter = Vector3.Distance(enemy.transform.position, planet.position);
+
+            if (distanceToPlanetCenter <= smartBombRadius)
+            {
+                EnemyBehavior eb = enemy.GetComponent<EnemyBehavior>();
+                if (eb != null)
+                {
+                    eb.DestroyEnemy(0);
+                    enemiesDestroyed++;
+                }
+            }
+        }
+        Debug.Log($"Smart Bomb destroyed {enemiesDestroyed} enemies.");
     }
 }

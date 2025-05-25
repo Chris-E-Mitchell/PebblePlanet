@@ -12,6 +12,11 @@ public class GameManager : MonoBehaviour
     [Header("UI Elements")]
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private TextMeshProUGUI smartBombText;
+
+    [Header("Smart Bomb Settings")]
+    [SerializeField] private int smartBombs = 3;
+    [SerializeField] private int scoreForNewBomb = 200;
 
     void Awake()
     {
@@ -30,6 +35,7 @@ public class GameManager : MonoBehaviour
     {
         score = 0;
         UpdateScoreUI();
+        UpdateSmartBombUI();
 
         if (gameOverPanel != null)
         {
@@ -59,6 +65,32 @@ public class GameManager : MonoBehaviour
 
         score += amount;
         UpdateScoreUI();
+
+        if ((score % scoreForNewBomb) == 0)
+        {
+            AddSmartBomb();
+            Debug.Log("New smart bomb awarded!");
+        }
+    }
+
+    public void RemoveSmartBomb()
+    {
+        if (smartBombs > 0)
+        {
+            smartBombs--;
+            UpdateSmartBombUI();
+        }
+    }
+
+    public void AddSmartBomb()
+    {
+        smartBombs++;
+        UpdateSmartBombUI();
+    }
+
+    public int GetSmartBombsRemaining()
+    {
+        return smartBombs;
     }
 
     void UpdateScoreUI()
@@ -66,6 +98,14 @@ public class GameManager : MonoBehaviour
         if (scoreText != null)
         {
             scoreText.text = $"Score: {score}";
+        }
+    }
+
+    void UpdateSmartBombUI()
+    {
+        if (smartBombText != null)
+        {
+            smartBombText.text = $"Smart Bombs: {smartBombs}";
         }
     }
 

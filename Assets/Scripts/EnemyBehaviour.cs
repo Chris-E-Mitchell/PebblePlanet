@@ -46,24 +46,8 @@ public class EnemyBehavior : MonoBehaviour
         {
             Debug.Log("Enemy hit by projectile!");
 
-            if (explosionSound != null) // << ADD THIS BLOCK
-            {
-                AudioSource.PlayClipAtPoint(explosionSound, Camera.main.transform.position);
-            }
-
-            if (explosionPrefab != null) // << ADD THIS BLOCK
-            {
-                Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-            }
-
-            Destroy(gameObject);
+            DestroyEnemy(enemyPoints);
             Destroy(collision.gameObject);
-
-            if (GameManager.Instance != null && !PlanetHealth.isGameOver)
-            {
-                GameManager.Instance.AddScore(enemyPoints);
-                Debug.Log("Adding enemy points:" + enemyPoints);
-            }
         }
         else if (collision.gameObject.CompareTag("Planet"))
         {
@@ -85,6 +69,27 @@ public class EnemyBehavior : MonoBehaviour
             }
             Destroy(gameObject); // Destroy the enemy after it hits the planet
         }
+    }
+
+    public void DestroyEnemy(int score)
+    {
+        if (score != 0)
+        {
+            GameManager.Instance.AddScore(enemyPoints);
+            Debug.Log("Adding enemy points:" + enemyPoints);
+        }
+
+        if (explosionSound != null) // << ADD THIS BLOCK
+        {
+            AudioSource.PlayClipAtPoint(explosionSound, Camera.main.transform.position);
+        }
+
+        if (explosionPrefab != null) // << ADD THIS BLOCK
+        {
+            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        }
+
+        Destroy(gameObject);
     }
 
     public void SetTargetPlanet(Transform targetPlanet)
