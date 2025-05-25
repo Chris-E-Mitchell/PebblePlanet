@@ -5,6 +5,9 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+    private const string HighScoreKey = "PebblePlanetHighScore";
+
+    [SerializeField] private string mainMenuSceneName = "MainMenuScene";
 
     [Header("Score Settings")]
     [SerializeField] private int score = 0;
@@ -12,6 +15,7 @@ public class GameManager : MonoBehaviour
     [Header("UI Elements")]
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private GameObject newHighScoreText;
     [SerializeField] private TextMeshProUGUI smartBombText;
 
     [Header("Smart Bomb Settings")]
@@ -41,6 +45,10 @@ public class GameManager : MonoBehaviour
         if (gameOverPanel != null)
         {
             gameOverPanel.SetActive(false);
+            if(newHighScoreText != null)
+            {
+                newHighScoreText.SetActive(false);
+            }
         }
     }
 
@@ -51,11 +59,12 @@ public class GameManager : MonoBehaviour
             if (gameOverPanel != null && !gameOverPanel.activeSelf)
             {
                 gameOverPanel.SetActive(true);
+                CheckAndSaveHighScore();
             }
 
             if (Input.GetKeyDown(KeyCode.R))
             {
-                RestartGame();
+                GoToMainMenu();
             }
         }
     }
@@ -67,6 +76,7 @@ public class GameManager : MonoBehaviour
         score += amount;
         UpdateScoreUI();
 
+        // Terrible way of deteriming if new bomb should be added - only works if exact score multiple is achieved
         if ((score % scoreForNewBomb) == 0)
         {
             AddSmartBomb();
@@ -122,10 +132,29 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void RestartGame()
+    public void GoToMainMenu()
     {
         Debug.Log("Restarting Game...");
         Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(mainMenuSceneName);
+    }
+
+    private void CheckAndSaveHighScore()
+    {
+        int currentSavedHighScore = PlayerPrefs.GetInt(HighScoreKey, 0);
+        if (score > currentSavedHighScore)
+        {
+            PlayerPrefs.SetInt(HighScoreKey, score);
+            PlayerPrefs.Save();
+            if (newHighScoreText != null)
+            {
+                newHighScoreText.SetActive(true);
+            }
+            Debug.Log($"New High Score Saved: {score} (Previous: {currentSavedHighScore})");
+        }
+        else
+        {
+            Debug.Log($"Current score {score} did not beat the High Score {currentSavedHighScore}");
+        }
     }
 }
