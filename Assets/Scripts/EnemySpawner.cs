@@ -4,7 +4,8 @@ public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private Transform planetTransform;
-    [SerializeField] private float spawnRate = 1f;
+    [SerializeField] private float spawnRateMinimum = 0.5f;
+    [SerializeField] private float spawnRateMaximum = 1.5f;
     [SerializeField] private float spawnDistance = 15f;
     [SerializeField] private float spawnVariance = 2f;
 
@@ -39,7 +40,7 @@ public class EnemySpawner : MonoBehaviour
         if (Time.time >= nextSpawnTime)
         {
             SpawnEnemy();
-            nextSpawnTime = Time.time + 1f / spawnRate;
+            nextSpawnTime = Time.time + Random.Range(spawnRateMinimum, spawnRateMaximum);
         }
     }
 

@@ -653,7 +653,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 1512596413929480960, guid: 4a2b0bebf1f51354380be591c630dbfb, type: 3}
   planetTransform: {fileID: 1387844078}
-  spawnRate: 1
+  spawnRateMinimum: 1
+  spawnRateMaximum: 1.5
   spawnDistance: 30
   spawnVariance: 5
 --- !u!4 &575449497
@@ -1409,7 +1410,7 @@ MonoBehaviour:
   score: 0
   scoreText: {fileID: 1758239747}
   gameOverPanel: {fileID: 262132618}
-  newHighScoreText: {fileID: 0}
+  newHighScoreText: {fileID: 808434602}
   smartBombText: {fileID: 221430997}
   smartBombs: 3
   scoreForNewBomb: 150

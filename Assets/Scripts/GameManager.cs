@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour
                 CheckAndSaveHighScore();
             }
 
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKeyDown(KeyCode.R) || Input.GetButtonDown("Fire2"))
             {
                 GoToMainMenu();
             }
